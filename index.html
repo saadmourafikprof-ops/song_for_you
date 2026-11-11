@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8e9ed">
+  <title>A song for you ♡</title>
+  <style>
+    :root {
+      --ink: #674650;
+      --muted: #987984;
+      --rose: #c77f91;
+      --rose-dark: #a95f76;
+      --paper: #fff9f8;
+      --line: #f0dce1;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100svh; padding: 28px 18px;
+      display: grid; place-items: center; overflow-x: hidden;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(ellipse at 12% 8%, #f6dfe5 0, transparent 34%),
+        radial-gradient(ellipse at 90% 90%, #f4dce2 0, transparent 32%),
+        linear-gradient(145deg, #fff8f7, #f9edf0 55%, #fff8f5);
+    }
+    .petal {
+      position: fixed; pointer-events: none; opacity: .45;
+      color: #d99aaa; font-size: clamp(22px, 5vw, 42px);
+      animation: float 8s ease-in-out infinite;
+    }
+    .p1 { top: 8%; left: 7%; } .p2 { top: 18%; right: 8%; animation-delay: -3s; }
+    .p3 { bottom: 12%; left: 10%; animation-delay: -5s; }
+    .p4 { bottom: 7%; right: 9%; animation-delay: -2s; }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-12px) rotate(8deg); } }
+    .card {
+      width: min(100%, 420px); padding: 28px 24px 24px;
+      border: 1px solid rgba(230,190,200,.75); border-radius: 28px;
+      background: rgba(255, 251, 250, .88);
+      box-shadow: 0 22px 70px rgba(145, 91, 108, .14);
+      text-align: center; position: relative;
+      backdrop-filter: blur(10px);
+    }
+    .eyebrow {
+      margin: 0 0 12px; color: var(--rose-dark);
+      font: 600 10px/1.4 system-ui, sans-serif; letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+    h1 { font-size: clamp(30px, 8vw, 38px); font-weight: 400; margin: 0; }
+    .subtitle { margin: 10px 0 22px; color: var(--muted); font-size: 15px; line-height: 1.5; }
+    .art {
+      width: min(100%, 290px); aspect-ratio: 1; margin: 0 auto 22px;
+      border-radius: 22px; overflow: hidden; position: relative;
+      display: grid; place-items: center;
+      background:
+        radial-gradient(ellipse at 24% 25%, rgba(255,255,255,.8), transparent 30%),
+        radial-gradient(ellipse at 75% 75%, rgba(255,255,255,.5), transparent 28%),
+        linear-gradient(145deg, #f4cbd5, #e9aebb 50%, #f7dfe3);
+      box-shadow: 0 12px 30px rgba(173, 105, 126, .18);
+    }
+    .art img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .art.has-image img { display: block; }
+    .art.has-image .placeholder { display: none; }
+    .placeholder { font-size: 84px; filter: drop-shadow(0 8px 8px rgba(130,70,90,.13)); }
+    .track-name { margin: 0; font-size: 21px; font-weight: 400; }
+    .artist { margin: 6px 0 22px; color: var(--muted); font: 13px system-ui, sans-serif; }
+    .progress-wrap { margin: 0 2px 8px; }
+    input[type="range"] {
+      width: 100%; accent-color: var(--rose-dark); cursor: pointer;
+    }
+    .times { display: flex; justify-content: space-between; color: #a88992; font: 11px system-ui, sans-serif; }
+    .controls { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 18px 0 12px; }
+    button {
+      border: 0; cursor: pointer; color: white; background: var(--rose);
+      box-shadow: 0 8px 18px rgba(169,95,118,.24);
+      transition: transform .15s ease, background .15s ease;
+    }
+    button:hover { background: var(--rose-dark); transform: translateY(-1px); }
+    button:focus-visible, input:focus-visible { outline: 3px solid #d89aaa; outline-offset: 4px; }
+    .play {
+      width: 64px; height: 64px; border-radius: 50%; font: 26px system-ui, sans-serif;
+      display: grid; place-items: center; padding-left: 4px;
+    }
+    .small {
+      width: 38px; height: 38px; border-radius: 50%; background: transparent;
+      color: var(--rose-dark); box-shadow: none; font: 19px system-ui, sans-serif;
+    }
+    .small:hover { background: #f8e8ec; color: var(--rose-dark); }
+    .note { min-height: 18px; margin: 12px 0 0; color: var(--muted); font: 12px/1.5 system-ui, sans-serif; }
+    .footer { margin: 24px 0 0; color: #b18d97; font-size: 13px; }
+    .footer span { color: var(--rose-dark); }
+    audio { display: none; }
+    @media (max-width: 360px) { .card { padding: 24px 18px 20px; } .art { width: 245px; } }
+  </style>
+</head>
+<body>
+  <span class="petal p1" aria-hidden="true">✿</span>
+  <span class="petal p2" aria-hidden="true">❀</span>
+  <span class="petal p3" aria-hidden="true">✿</span>
+  <span class="petal p4" aria-hidden="true">❀</span>
+
+  <main class="card">
+    <p class="eyebrow">A little something for you</p>
+    <h1>A song for you ♡</h1>
+    <p class="subtitle">A little piece of my heart, just for you.</p>
+
+    <div class="art" id="art">
+      <img id="cover" src="cover.jpg" alt="Song cover artwork">
+      <div class="placeholder" aria-hidden="true">🌷</div>
+    </div>
+
+    <p class="track-name" id="trackName">A song for you</p>
+    <p class="artist" id="artistName">Made with love ♡</p>
+
+    <audio id="audio" preload="metadata">
+      <source src="song.mp3" type="audio/mpeg">
+      Your browser does not support audio playback.
+    </audio>
+
+    <div class="progress-wrap">
+      <input id="seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek through song">
+      <div class="times"><span id="current">0:00</span><span id="duration">0:00</span></div>
+    </div>
+    <div class="controls">
+      <button class="small" id="restart" aria-label="Restart song" title="Restart">↺</button>
+      <button class="play" id="play" aria-label="Play song">▶</button>
+      <button class="small" id="volume" aria-label="Toggle mute" title="Toggle mute">♪</button>
+    </div>
+    <p class="note" id="status" role="status">Tap play to listen ♡</p>
+    <p class="footer">Always yours <span>♥</span></p>
+  </main>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const play = document.getElementById('play');
+    const seek = document.getElementById('seek');
+    const current = document.getElementById('current');
+    const duration = document.getElementById('duration');
+    const status = document.getElementById('status');
+    const art = document.getElementById('art');
+    const cover = document.getElementById('cover');
+
+    function time(s) {
+      if (!Number.isFinite(s)) return '0:00';
+      return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    }
+    play.addEventListener('click', async () => {
+      if (audio.paused) {
+        try { await audio.play(); status.textContent = 'Playing just for you ♡'; }
+        catch (e) { status.textContent = 'Could not play the song. Check that song.mp3 is uploaded.'; }
+      } else { audio.pause(); }
+    });
+    audio.addEventListener('play', () => { play.textContent = 'Ⅱ'; play.setAttribute('aria-label', 'Pause song'); });
+    audio.addEventListener('pause', () => { play.textContent = '▶'; play.setAttribute('aria-label', 'Play song'); });
+    audio.addEventListener('loadedmetadata', () => { duration.textContent = time(audio.duration); });
+    audio.addEventListener('timeupdate', () => {
+      current.textContent = time(audio.currentTime);
+      if (Number.isFinite(audio.duration) && audio.duration > 0)
+        seek.value = (audio.currentTime / audio.duration) * 100;
+    });
+    seek.addEventListener('input', () => {
+      if (Number.isFinite(audio.duration)) audio.currentTime = (Number(seek.value) / 100) * audio.duration;
+    });
+    document.getElementById('restart').addEventListener('click', () => {
+      audio.currentTime = 0; audio.play().catch(() => {});
+    });
+    document.getElementById('volume').addEventListener('click', (e) => {
+      audio.muted = !audio.muted; e.currentTarget.textContent = audio.muted ? '×' : '♪';
+    });
+    audio.addEventListener('ended', () => { status.textContent = 'Hope you liked it ♡'; });
+    cover.addEventListener('load', () => art.classList.add('has-image'));
+    cover.addEventListener('error', () => art.classList.remove('has-image'));
+    audio.addEventListener('error', () => {
+      status.textContent = 'Add your audio file to this folder and name it song.mp3.';
+    });
+  </script>
+</body>
+</html>
